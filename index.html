@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>(주)에이아이즈 AIEYES — AI · 빅데이터 · 로봇 자동화 전문기업</title>
+  <meta name="description" content="AI Ontology 기반 빅데이터 컨설팅 및 솔루션, AI Agent 플랫폼, 로봇 무인 자동화, 정부사업 컨소시엄. 세상을 다른 눈으로 바라보고 세상을 바꿉니다." />
+  <meta property="og:title" content="(주)에이아이즈 AIEYES" />
+  <meta property="og:description" content="세상을 다른 눈으로 바라보고 세상을 바꿉니다. AI 확산을 통한 K-DX/AX 트렌드 시대를 이끕니다." />
+
+  <!-- Pretendard (한글 웹폰트) -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+  />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1.2" />
+</head>
+<body>
+
+  <!-- ===================== GNB ===================== -->
+  <header class="gnb" id="gnb">
+    <div class="container gnb-inner">
+      <a href="#top" class="brand" aria-label="AIEYES 홈">
+        <img class="brand-mark" src="assets/img/logo-256.png" alt="AIEYES 로고" width="256" height="220" />
+        <span class="brand-text">AI<b>EYES</b></span>
+      </a>
+
+      <nav class="nav" aria-label="주요 메뉴">
+        <ul class="nav-links">
+          <li><a href="#about">회사 소개</a></li>
+          <li><a href="#solutions">비즈니스 솔루션</a></li>
+          <li><a href="#usecases">적용사례</a></li>
+          <li><a href="#ecosystem">비전</a></li>
+          <li><a href="#why">핵심 역량</a></li>
+        </ul>
+        <div class="nav-cta">
+          <button class="btn btn-ghost btn-sm js-phone">전화 상담</button>
+          <button class="btn btn-primary btn-sm always js-open-contact">문의하기</button>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="모바일 메뉴 열기" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 모바일 드로어 -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#about">회사 소개</a>
+    <a href="#solutions">비즈니스 솔루션</a>
+    <a href="#ecosystem">비전</a>
+    <a href="#why">핵심 역량</a>
+    <button class="btn btn-primary js-open-contact">문의하기</button>
+    <button class="btn btn-mint js-phone">전화 상담 신청</button>
+  </div>
+
+  <span id="top"></span>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="about">
+    <div class="container hero-grid">
+      <div class="hero-text reveal">
+        <div class="hero-badge"><span class="dot"></span> AI Ontology · Big Data · Robot Automation</div>
+        <h1>세상을 다른 눈으로<br />바라보고<br /><span class="grad">세상을 바꿉니다.</span></h1>
+        <p class="hero-lead">
+          AI 확산을 통한 K-DX/AX 트렌드 시대, (주)에이아이즈가<br />
+          독보적인 AI Ontology 알고리즘과 지능형 AI Agent 플랫폼,<br />
+          로봇 무인 자동화 인프라로 산업의 패러다임을 이끕니다.
+        </p>
+        <div class="hero-actions">
+          <a href="#solutions" class="btn btn-primary">솔루션 탐색하기</a>
+          <button class="btn btn-mint js-open-contact">실시간 상담 신청</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num"><b>20</b>x</div><div class="lbl">데이터 처리량</div></div>
+          <div class="hero-stat"><div class="num"><b>100</b>x</div><div class="lbl">쿼리 처리 속도</div></div>
+          <div class="hero-stat"><div class="num"><b>90</b>%↑</div><div class="lbl">데이터 압축률</div></div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal d1">
+        <!-- 3D 휴머노이드 로봇 (Three.js · 자체 코드, 마우스 추적, 워터마크 없음) -->
+        <div class="hero-robot3d" id="heroRobot3D"></div>
+        <canvas class="hero-net" id="heroNet"></canvas>
+        <div class="hud tl">AIEYES // AX·DX CORE</div>
+        <div class="hud tr">STATUS: <span id="robotStatus">ONLINE</span>
+          <button class="power3d" id="robotPower" aria-label="로봇 전원 온/오프" title="로봇 전원">
+            <span class="p3d-face"><span class="p3d-led"></span>ON</span>
+          </button>
+        </div>
+        <div class="hud bl">ONTOLOGY ENGINE</div>
+        <div class="hud br">v2026.07</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 회사소개 · 스마트 매뉴팩처링 흐름 ===================== -->
+  <section class="section alt" id="company">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Smart Manufacturing</div>
+        <h2 class="section-title">데이터에서 <span class="hl">무인 자동화</span>까지, 하나의 흐름</h2>
+        <p class="section-sub">설비·IoT 데이터 수집부터 AI 분석, 로봇 자동화, 디지털 트윈 시각화까지 — AIEYES가 스마트 매뉴팩처링 전 과정을 하나로 연결합니다.</p>
+      </div>
+      <div class="flow reveal d1">
+        <div class="flow-step">
+          <span class="flow-num">01</span>
+          <div class="flow-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+          </div>
+          <h4>데이터 수집</h4>
+          <p>설비 · IoT · 로봇</p>
+          <span class="flow-d">현장 설비·IoT 센서·로봇에서 발생하는 대용량 데이터를 실시간으로 수집·적재합니다.</span>
+        </div>
+        <div class="flow-arrow"><span class="line"></span><span class="dot"></span></div>
+        <div class="flow-step">
+          <span class="flow-num">02</span>
+          <div class="flow-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h4>AI 분석</h4>
+          <p>Ontology · ML/DL</p>
+          <span class="flow-d">AI Ontology와 머신러닝·딥러닝으로 데이터를 분석하고 공정 이상·품질을 예측합니다.</span>
+        </div>
+        <div class="flow-arrow"><span class="line"></span><span class="dot"></span></div>
+        <div class="flow-step">
+          <span class="flow-num">03</span>
+          <div class="flow-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="8" width="14" height="10" rx="2"/><path d="M12 8V5M12 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/></svg>
+          </div>
+          <h4>무인 자동화</h4>
+          <p>AMR · 휴머노이드</p>
+          <span class="flow-d">AMR·사족보행·휴머노이드 로봇이 검사·적재·이송 공정을 무인으로 수행합니다.</span>
+        </div>
+        <div class="flow-arrow"><span class="line"></span><span class="dot"></span></div>
+        <div class="flow-step">
+          <span class="flow-num">04</span>
+          <div class="flow-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 11l3-3 3 2 4-4"/></svg>
+          </div>
+          <h4>시각화</h4>
+          <p>Digital Twin</p>
+          <span class="flow-d">Digital Twin 3D로 전 공정을 실시간 모니터링하고 데이터 기반으로 의사결정합니다.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 솔루션 ===================== -->
+  <section class="section" id="solutions">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Business Solutions</div>
+        <h2 class="section-title">4대 핵심 <span class="hl">비즈니스 솔루션</span></h2>
+        <p class="section-sub">데이터에서 로봇 자동화, 정부사업 컨소시엄까지 — AIEYES가 제공하는 엔드투엔드 AI 솔루션 포트폴리오.</p>
+      </div>
+
+      <div class="solutions-grid">
+        <!-- 1. SQREAM -->
+        <article class="glow-card reveal">
+          <div class="card-top">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+            </div>
+            <span class="card-tag">SQREAM · GPU DBMS</span>
+          </div>
+          <h3>GPU 기반 빅데이터 솔루션</h3>
+          <p>대용량 분석용 컬럼형 DBMS. 원본 데이터를 90% 이상 고압축 저장·분석하고, 표준 ANSI SQL 기반으로 강력한 ROI와 비용 최소화를 구현합니다.</p>
+          <div class="card-metrics">
+            <div class="metric"><div class="m-num"><b>20</b>x</div><div class="m-lbl">DATA</div></div>
+            <div class="metric"><div class="m-num"><b>100</b>x</div><div class="m-lbl">SPEED</div></div>
+            <div class="metric"><div class="m-num"><b>10</b>%</div><div class="m-lbl">RESOURCE</div></div>
+          </div>
+        </article>
+
+        <!-- 2. AE 플랫폼 -->
+        <article class="glow-card reveal d1">
+          <div class="card-top">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0-3 3 3 3 0 0 0 0 6 3 3 0 0 0 3 3v1a3 3 0 0 0 6 0v-1a3 3 0 0 0 3-3 3 3 0 0 0 0-6 3 3 0 0 0-3-3V5a3 3 0 0 0-3-3z"/><path d="M12 8v8M9 12h6"/></svg>
+            </div>
+            <span class="card-tag">AE PLATFORM</span>
+          </div>
+          <h3>AI · 빅데이터 플랫폼</h3>
+          <p>데이터 패브릭(Data Fabric), 비정형 AI Ontology, 지능형 AI Agent를 결합한 기업 맞춤형 지식 공유·AX 플랫폼 서비스를 제공합니다.</p>
+          <div class="card-metrics">
+            <div class="metric"><div class="m-num">AI Ontology</div><div class="m-lbl">CORE</div></div>
+            <div class="metric"><div class="m-num">Data Fabric</div><div class="m-lbl">ARCH</div></div>
+          </div>
+        </article>
+
+        <!-- 3. 로봇 자동화 -->
+        <article class="glow-card reveal">
+          <div class="card-top">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="8" width="14" height="10" rx="2"/><path d="M12 8V5M12 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/><path d="M5 12H3M21 12h-2"/></svg>
+            </div>
+            <span class="card-tag">AMR · QUADRUPED · HUMANOID</span>
+          </div>
+          <h3>로봇 무인 자동화 서비스</h3>
+          <p>AMR·사족보행 로봇·휴머노이드 통합 관제. 정밀 비전 AI 검사와 무인 적재·이송 자동화로 스마트 공정을 완성합니다.</p>
+          <div class="card-metrics">
+            <div class="metric"><div class="m-num">Autonomous</div><div class="m-lbl">CONTROL</div></div>
+            <div class="metric"><div class="m-num">AI Vision</div><div class="m-lbl">INSPECTION</div></div>
+          </div>
+        </article>
+
+        <!-- 4. 정부사업 -->
+        <article class="glow-card reveal d1">
+          <div class="card-top">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6"/><path d="M4 10h16"/></svg>
+            </div>
+            <span class="card-tag">GOV R&D · CONSORTIUM</span>
+          </div>
+          <h3>정부 사업 지원 서비스</h3>
+          <p>중기부·산자부·과기부 등 국책 과제 수요조사와 전략 수립, 사업 고도화를 위한 최적의 연계 컨소시엄 구성을 지원합니다.</p>
+          <div class="card-metrics">
+            <div class="metric"><div class="m-num">R&D Planning</div><div class="m-lbl">CONSULT</div></div>
+            <div class="metric"><div class="m-num">Consortium</div><div class="m-lbl">PARTNER</div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 산업별 적용사례 (Use Cases) =====================
+       * 이미지는 assets/img/photos/ 의 파일을 교체하면 그대로 반영됩니다 (Canva 등에서 편집 후 드롭). -->
+  <section class="section alt" id="usecases">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Use Cases</div>
+        <h2 class="section-title">산업 현장에서 <span class="hl">증명된 적용사례</span></h2>
+        <p class="section-sub">제조·물류·품질·에너지 전반에서 AIEYES의 AI·빅데이터·로봇 솔루션이 실질적인 성과를 만듭니다.</p>
+      </div>
+
+      <div class="uc-grid">
+        <article class="uc-card reveal">
+          <div class="uc-thumb"><span class="uc-tag">제조</span><img src="assets/img/photos/uc-manufacturing.jpg" alt="스마트 제조 공정" loading="lazy" /></div>
+          <div class="uc-body"><h3>스마트 제조 공정 최적화</h3><p>생산·공정·품질 데이터를 AI로 분석해 불량을 줄이고 생산성을 높입니다.</p></div>
+        </article>
+        <article class="uc-card reveal d1">
+          <div class="uc-thumb"><span class="uc-tag">로봇</span><img src="assets/img/photos/uc-robot.jpg" alt="로봇 무인 자동화" loading="lazy" /></div>
+          <div class="uc-body"><h3>로봇 무인 자동화</h3><p>AMR·사족보행·휴머노이드 로봇으로 검사·적재·이송 공정을 무인화합니다.</p></div>
+        </article>
+        <article class="uc-card reveal d2">
+          <div class="uc-thumb"><span class="uc-tag">AI 분석</span><img src="assets/img/photos/uc-ai.jpg" alt="AI 데이터 분석" loading="lazy" /></div>
+          <div class="uc-body"><h3>AI 데이터 분석 · 예측</h3><p>AI Ontology 기반으로 대용량 데이터를 실시간 분석하고 이상·품질을 예측합니다.</p></div>
+        </article>
+        <article class="uc-card reveal">
+          <div class="uc-thumb"><span class="uc-tag">시각화</span><img src="assets/img/photos/uc-digitaltwin.jpg" alt="디지털 트윈 모니터링" loading="lazy" /></div>
+          <div class="uc-body"><h3>디지털 트윈 모니터링</h3><p>Digital Twin 3D로 공정 전체를 실시간 시각화하고 원격 관제합니다.</p></div>
+        </article>
+        <article class="uc-card reveal d1">
+          <div class="uc-thumb"><span class="uc-tag">품질</span><img src="assets/img/photos/uc-quality.jpg" alt="품질 비전 검사" loading="lazy" /></div>
+          <div class="uc-body"><h3>품질 비전 검사</h3><p>AI 비전 검사로 완제품·부품의 결함을 빠르고 정밀하게 판별합니다.</p></div>
+        </article>
+        <article class="uc-card reveal d2">
+          <div class="uc-thumb"><span class="uc-tag">컨설팅</span><img src="assets/img/photos/uc-consulting.jpg" alt="정부 R&D 컨설팅" loading="lazy" /></div>
+          <div class="uc-body"><h3>정부 R&amp;D · 컨소시엄</h3><p>국책과제 기획·수요조사부터 최적 컨소시엄 구성·사업관리까지 지원합니다.</p></div>
+        </article>
+      </div>
+
+      <div class="ref-strip reveal">
+        <span class="ref-label">주요 빅데이터 도입 레퍼런스</span>
+        <div class="ref-logos">
+          <span>삼성생명</span><span>SK텔레콤</span><span>LG유플러스</span><span>삼성디스플레이</span><span>삼성SDI</span><span>SK하이닉스</span><span>LG전자</span><span>KB국민카드</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 에코시스템 ===================== -->
+  <section class="ecosystem" id="ecosystem">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Ecosystem &amp; Partners</div>
+        <h2 class="section-title">문제 해결 네트워크 &amp; <span class="hl-mint">최적의 컨소시엄</span></h2>
+        <p class="section-sub">정부 주요 부처와 전문 연구기관이 함께하는 신뢰 기반의 협력 네트워크로 과제를 완성합니다.</p>
+      </div>
+      <div class="eco-hub reveal d1">
+        <svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AIEYES 컨소시엄 협력 네트워크 맵" font-family="Pretendard, sans-serif">
+          <defs>
+            <radialGradient id="hubg" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#4f93ff"/><stop offset="100%" stop-color="#7b5cff"/>
+            </radialGradient>
+          </defs>
+          <!-- 연결선 (흐르는 대시) -->
+          <g stroke="#2f7bff" stroke-width="2" fill="none" opacity="0.55" stroke-dasharray="6 8" stroke-linecap="round">
+            <line x1="450" y1="215" x2="750" y2="215"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="0.9s" repeatCount="indefinite"/></line>
+            <line x1="450" y1="215" x2="600" y2="345"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="1.1s" repeatCount="indefinite"/></line>
+            <line x1="450" y1="215" x2="300" y2="345"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="1.0s" repeatCount="indefinite"/></line>
+            <line x1="450" y1="215" x2="150" y2="215"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="1.2s" repeatCount="indefinite"/></line>
+            <line x1="450" y1="215" x2="300" y2="85"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="0.95s" repeatCount="indefinite"/></line>
+            <line x1="450" y1="215" x2="600" y2="85"><animate attributeName="stroke-dashoffset" from="14" to="0" dur="1.05s" repeatCount="indefinite"/></line>
+          </g>
+          <!-- 노드 카드 -->
+          <g font-size="13.5" font-weight="600" fill="#0b1533" text-anchor="middle">
+            <g><rect x="665" y="193" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="750" y="220">과학기술정보통신부</text></g>
+            <g><rect x="515" y="323" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="600" y="350">한국로봇융합연구원</text></g>
+            <g><rect x="215" y="323" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="300" y="350" fill="#1f5fe0" font-weight="800">SQREAM</text></g>
+            <g><rect x="65" y="193" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="150" y="220" fill="#1f5fe0" font-weight="800">도구로보틱스</text></g>
+            <g><rect x="215" y="63" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="300" y="90">중소벤처기업부</text></g>
+            <g><rect x="515" y="63" width="170" height="44" rx="12" fill="#ffffff" stroke="#c9d3e6"/><text x="600" y="90">산업통상자원부</text></g>
+          </g>
+          <!-- 중앙 허브 -->
+          <circle cx="450" cy="215" r="66" fill="#2f7bff" opacity="0.12"><animate attributeName="r" values="60;70;60" dur="3s" repeatCount="indefinite"/></circle>
+          <circle cx="450" cy="215" r="52" fill="url(#hubg)"/>
+          <text x="450" y="210" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="800">AIEYES</text>
+          <text x="450" y="230" text-anchor="middle" fill="#dbe7ff" font-size="10.5" font-weight="600" letter-spacing="1">AI PLATFORM</text>
+        </svg>
+      </div>
+    </div>
+    <div class="marquee reveal">
+      <div class="marquee-track" id="marqueeTrack">
+        <!-- 파트너 세트 (JS가 무한 롤링용으로 1회 복제) -->
+        <span class="partner"><span class="p-mark">중기</span>중소벤처기업부</span>
+        <span class="partner"><span class="p-mark">산자</span>산업통상자원부</span>
+        <span class="partner"><span class="p-mark">과기</span>과학기술정보통신부</span>
+        <span class="partner"><span class="p-mark">KIRO</span>한국로봇융합연구원</span>
+        <span class="partner"><span class="p-mark">SQ</span>SQREAM Technologies</span>
+        <span class="partner"><span class="p-mark">도구</span>도구로보틱스</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHY AIEYES ===================== -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Why AIEYES</div>
+        <h2 class="section-title">기술과 사업, <span class="hl">두 축의 경쟁력</span></h2>
+        <p class="section-sub">핵심 원천 기술 스택과 검증된 4대 비즈니스 밸류로 고객의 디지털 전환을 완성합니다.</p>
+      </div>
+
+      <div class="why-layout">
+        <!-- 좌: 기술 스택 트라이앵글 -->
+        <div class="tech-panel reveal">
+          <div class="tp-title">핵심 기술 <span>스택</span></div>
+          <div class="tri">
+            <svg class="links" viewBox="0 0 300 300" preserveAspectRatio="none">
+              <line x1="150" y1="30" x2="65" y2="270"/>
+              <line x1="150" y1="30" x2="235" y2="270"/>
+              <line x1="65" y1="270" x2="235" y2="270"/>
+            </svg>
+            <div class="node top">AI Algorithm<small>ONTOLOGY</small></div>
+            <div class="node bl">Big Data<small>SQREAM</small></div>
+            <div class="node br">Computing<small>GPU INFRA</small></div>
+          </div>
+        </div>
+
+        <!-- 우: 4대 밸류 -->
+        <div class="value-grid">
+          <div class="value-box reveal">
+            <div class="v-num">01</div>
+            <h4>최고의 기술력</h4>
+            <p>핵심 원천 알고리즘 설계와 빅데이터 컨설팅 파이프라인 최적화 역량을 보유합니다.</p>
+          </div>
+          <div class="value-box reveal d1">
+            <div class="v-num">02</div>
+            <h4>안정적인 서비스 제공</h4>
+            <p>대용량 아키텍처 실증을 통해 검증된 안정성으로 미션 크리티컬 환경을 지원합니다.</p>
+          </div>
+          <div class="value-box reveal">
+            <div class="v-num">03</div>
+            <h4>기업과의 협업 추진</h4>
+            <p>단순 공급을 넘어 지속 가능 경영을 위한 공동 전략 모델링을 함께 설계합니다.</p>
+          </div>
+          <div class="value-box reveal d1">
+            <div class="v-num">04</div>
+            <h4>최고의 서비스 컨소시엄</h4>
+            <p>정부 부처·산학연을 잇는 로봇 융합 얼라이언스 네트워크를 가동합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA 밴드 ===================== -->
+  <section class="section" style="padding-top:0;">
+    <div class="cta-band reveal">
+      <h2>비즈니스에 AI를 더할 준비가 되셨나요?</h2>
+      <p class="js-cta-sub">도입 검토 사항을 남겨주시면 AIEYES 아키텍트가 신속히 회신드립니다.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary js-open-contact">비즈니스 문의하기</button>
+        <button class="btn btn-mint js-phone">전화 상담</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 찾아오는 길 =====================
+       * 약도 이미지는 assets/img/map.png 파일을 넣으면 자동 표시됩니다.
+       *  (파일이 없으면 아래 대체 안내 박스가 표시됩니다.) -->
+  <section class="section" id="location">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">Location</div>
+        <h2 class="section-title">찾아오시는 <span class="hl">길</span></h2>
+        <p class="section-sub">가산디지털단지 중심부에 위치해 대중교통으로 편리하게 방문하실 수 있습니다.</p>
+      </div>
+
+      <div class="loc-layout reveal d1">
+        <div class="loc-map">
+          <a class="js-map-link" href="#" target="_blank" rel="noopener" aria-label="지도에서 위치 보기">
+            <img src="assets/img/map.png" alt="AIEYES 오시는 길 약도" onerror="this.closest('.loc-map').classList.add('no-map')" />
+            <span class="loc-map-fallback">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-6.4-7-11a7 7 0 0 1 14 0c0 4.6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <b>(주)에이아이즈</b>
+              <span class="lf-addr js-address">서울특별시 금천구 디지털로9길 68</span>
+              <span class="lf-hint">지도에서 보기 →</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="loc-info">
+          <div class="loc-item">
+            <span class="loc-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 20l-1.5 2M15 20l1.5 2"/><circle cx="9" cy="13.5" r="1"/><circle cx="15" cy="13.5" r="1"/></svg>
+            </span>
+            <div><h4>지하철</h4><p>가산디지털단지역 <b>(1·7호선) 6번 출구</b>에서 <b>도보 5분</b></p></div>
+          </div>
+          <div class="loc-item">
+            <span class="loc-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.4-7-11a7 7 0 0 1 14 0c0 4.6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </span>
+            <div><h4>주소</h4><p class="js-address">—</p></div>
+          </div>
+          <div class="loc-item">
+            <span class="loc-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+            </span>
+            <div><h4>문의</h4><p><a class="js-help-email" href="#">help@aieyes.co.kr</a> · <span class="js-hours">평일 09:00-18:00</span></p></div>
+          </div>
+          <div class="loc-actions">
+            <a class="btn btn-primary js-map-link" href="#" target="_blank" rel="noopener">네이버 지도에서 길찾기</a>
+            <button class="btn btn-ghost js-open-contact">문의하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <div class="brand">
+            <img class="brand-mark" src="assets/img/logo-256.png" alt="AIEYES 로고" width="256" height="220" />
+            <span class="brand-text">AI<b>EYES</b></span>
+          </div>
+          <p class="js-company-name">(주)에이아이즈</p>
+          <p><span class="fi-label">주소</span><span class="js-address">—</span></p>
+          <p><span class="fi-label">문의메일</span><a class="js-help-email" href="#">—</a></p>
+          <p><span class="fi-label">대표 연락처</span><span class="js-landline">—</span></p>
+          <p><span class="fi-label">담당전화</span><a class="js-phone-link" href="#">—</a></p>
+          <p><span class="fi-label">운영시간</span><span class="js-hours">—</span></p>
+        </div>
+
+        <div class="link-group">
+          <h5>솔루션</h5>
+          <ul>
+            <li><a href="#solutions">SQREAM GPU DBMS</a></li>
+            <li><a href="#solutions">AE 빅데이터 플랫폼</a></li>
+            <li><a href="#solutions">로봇 무인 자동화</a></li>
+            <li><a href="#solutions">정부사업 컨소시엄</a></li>
+          </ul>
+        </div>
+
+        <div class="link-group">
+          <h5>회사</h5>
+          <ul>
+            <li><a href="#about">회사 소개</a></li>
+            <li><a href="#why">핵심 역량</a></li>
+            <li><a href="#ecosystem">비전</a></li>
+            <li><a href="#" class="js-open-contact">문의하기</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="legal">
+          <a href="#">이용약관</a>
+          <a href="#">개인정보처리방침</a>
+          <a href="#" class="js-website">www.aieyes.co.kr</a>
+        </div>
+        <div class="copy">© 2026 AIEYES Ltd. All Rights Reserved.
+          <span class="model-credit">3D Robot: <a href="https://sketchfab.com/3d-models/teal-v2-d6a54ff9468c451bbdbd879afa03f20a" target="_blank" rel="noopener">"Teal V.2"</a> by <a href="https://sketchfab.com/Lagst" target="_blank" rel="noopener">Lagst</a> (Sketchfab)</span>
+        </div>
+      </div>
+
+      <!-- 개발사 크레딧 -->
+      <div class="dev-credit">
+        <span class="dc-txt">Developed by YJC</span>
+        <span class="dc-sep">|</span>
+        <span class="dc-txt">문의 <a href="mailto:pjhsun@gmail.com">pjhsun@gmail.com</a></span>
+        <span class="dc-hours">(평일 09:00~17:00)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== 문의 모달 ===================== -->
+  <div class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card modal-card-fixed">
+      <div class="modal-head">
+        <button class="modal-close" id="closeModal" aria-label="닫기">&times;</button>
+        <h3 id="modalTitle">비즈니스 &amp; 컨소시엄 문의</h3>
+        <p class="modal-sub">아래 채널로 바로 연락하시거나, 폼을 남겨주시면 담당 아키텍트가 회신드립니다.</p>
+      </div>
+
+      <div class="modal-scroll">
+      <!-- 대표 연락 채널 (Config 렌더) -->
+      <div class="contact-channels" id="contactChannels"></div>
+
+      <div class="divider-or">또는 문의 남기기</div>
+
+      <form id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cName">기업/기관명</label>
+            <input class="form-control" id="cName" type="text" placeholder="회사명" required />
+          </div>
+          <div class="form-group">
+            <label for="cManager">담당자</label>
+            <input class="form-control" id="cManager" type="text" placeholder="성함 / 직함" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cEmail">이메일</label>
+            <input class="form-control" id="cEmail" type="email" placeholder="name@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="cPhone">연락처</label>
+            <input class="form-control" id="cPhone" type="tel" placeholder="010-0000-0000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cMsg">문의 내용</label>
+          <textarea class="form-control" id="cMsg" placeholder="도입 검토 중인 솔루션과 문의사항을 남겨주세요." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">문의 접수하기</button>
+        <p class="form-note">* 본 프로토타입은 실제 전송 대신 접수 확인만 표시됩니다.</p>
+      </form>
+      </div><!-- /.modal-scroll -->
+    </div>
+  </div>
+
+  <!-- ===================== 솔루션 상세 모달 ===================== -->
+  <div class="modal modal-lg" id="solutionModal" role="dialog" aria-modal="true" aria-labelledby="solTitle">
+    <div class="modal-card sol-card">
+      <button class="modal-close" id="closeSolModal" aria-label="닫기">&times;</button>
+      <div class="sol-head">
+        <span class="sol-tag" id="solTag"></span>
+        <h3 id="solTitle" class="sol-title"></h3>
+        <p class="sol-subtitle" id="solSubtitle"></p>
+      </div>
+      <div class="sol-body" id="solBody"></div>
+      <div class="sol-cta">
+        <button class="btn btn-primary js-open-contact" id="solContactBtn">이 솔루션 문의하기</button>
+        <button class="btn btn-ghost" id="solCloseBtn">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 이미지 라이트박스(확대 보기) ===================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="이미지 확대 보기">
+    <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
+    <img id="lbImg" src="" alt="" />
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+
+  <!-- ===================== AI 챗봇 ===================== -->
+  <div class="chat-fab-label" id="chatFabLabel">🤖 AI 상담봇에게 물어보세요</div>
+  <button class="chat-fab" id="chatFab" aria-label="AI 상담 챗봇 열기">
+    <svg class="fab-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8A8.38 8.38 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5z"/></svg>
+    <svg class="fab-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+
+  <section class="chat-panel" id="chatPanel" aria-label="AI 상담 챗봇">
+    <canvas class="chat-canvas" id="chatCanvas"></canvas>
+    <div class="chat-head">
+      <div class="ch-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4M8 13h.01M16 13h.01M9 17h6"/></svg>
+      </div>
+      <div>
+        <div class="ch-name">AIEYES 상담 봇</div>
+        <div class="ch-status"><span class="d"></span> 온라인 · 즉시 응답</div>
+      </div>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-quick" id="chatQuick">
+      <button data-q="솔루션이 궁금해요">솔루션 소개</button>
+      <button data-q="SQREAM 성능이 어떻게 되나요?">SQREAM 성능</button>
+      <button data-q="상담 연락처 알려줘">연락처</button>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="메시지를 입력하세요..." autocomplete="off" />
+      <button class="chat-send" id="chatSend" aria-label="전송">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- 백-투-톱 -->
+  <button class="to-top" id="toTop" aria-label="맨 위로">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="assets/js/config.js?v=1.2"></script>
+  <script src="assets/js/solutions-data.js?v=1.2"></script>
+  <script src="assets/js/main.js?v=1.2"></script>
+  <!-- 3D 로봇: Three.js (전역 빌드) + 환경맵(반사) + 자체 로봇 스크립트 -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="assets/js/robot3d.js?v=1.2"></script>
+</body>
+</html>
