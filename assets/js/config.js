@@ -17,9 +17,9 @@ window.AIEYES_CONFIG = {
     //   후보1) "...바라 보고 세상을..."   (띄어쓰기로 토큰 분리 — 기본값)
     //   후보2) "...바라보고요, 세상을..." (종결형으로 유도)
     //   후보3) "...바라보며 세상을..."     (동일 의미의 다른 연결어미)
-    voiceSlogan: "에이아이즈는 세상을 다른 눈으로 바라 보고 세상을 바꿉니다.",
-    // 영문 모드에서 로봇이 읽는 문장
-    voiceSlogan_en: "AIEYES sees the world differently, and changes it.",
+    voiceSlogan: "에이아이즈에 오신 것을 환영합니다.",
+    // 영문 모드에서 로봇이 읽는 문장 (AIEYES = "AI Eyes" 발음)
+    voiceSlogan_en: "Welcome to AI Eyes.",
     subSlogan: "AI 확산을 통한 K-DX/AX 트렌드 시대, (주)에이아이즈가 이끕니다.",
     intro:
       "AI Ontology 기반 빅데이터 컨설팅 및 솔루션 공급, AI Agent를 위한 AI 플랫폼 서비스 공급 전문기업",

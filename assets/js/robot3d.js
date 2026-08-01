@@ -109,7 +109,14 @@
     try { window.speechSynthesis.getVoices(); } catch (e) {}
     window.speechSynthesis.onvoiceschanged = function () {};
   }
-  function speakSlogan() {
+  var ttsAudio = null; // Google TTS 재생 핸들
+  // 재생 중인 음성(구글 오디오 + 브라우저 TTS)을 모두 중지
+  function stopSpeak() {
+    if (ttsAudio) { try { ttsAudio.pause(); ttsAudio.src = ""; } catch (e) {} ttsAudio = null; }
+    if ("speechSynthesis" in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+  }
+  // 폴백: 브라우저 내장 음성(speechSynthesis)
+  function speakBrowser() {
     if (!("speechSynthesis" in window)) return;
     try {
       window.speechSynthesis.cancel();
@@ -121,6 +128,26 @@
       if (voice) { u.voice = voice; u.lang = voice.lang; }
       window.speechSynthesis.speak(u);
     } catch (e) {}
+  }
+  // 우선 Google 번역 TTS(부드러운 음성, 무료)로 재생 → 실패 시 브라우저 음성 폴백
+  function speakSlogan() {
+    stopSpeak();
+    var isEn = (window.AIEYES_LANG === "en");
+    var text = currentSlogan();
+    // StreamElements TTS(Amazon Polly 음성 · 무료 · CORS 지원) — 부드러운 음성
+    var voice = isEn ? "Matthew" : "Seoyeon";
+    try {
+      var url = "https://api.streamelements.com/kappa/v2/speech?voice=" + voice +
+        "&text=" + encodeURIComponent(text);
+      var a = new Audio(url); // crossOrigin 설정 안 함 — 재생만 하므로 CORS 불필요
+      a.volume = 1.0;
+      ttsAudio = a;
+      var fellBack = false;
+      function fallback() { if (!fellBack) { fellBack = true; ttsAudio = null; speakBrowser(); } }
+      a.onerror = fallback;
+      var p = a.play();
+      if (p && p.catch) p.catch(fallback);
+    } catch (e) { speakBrowser(); }
   }
   // 최초 사용자 상호작용 시 1회 인사(자동재생 정책 대응)
   function firstGreet() {
@@ -139,7 +166,7 @@
     if (statusEl) statusEl.textContent = powerOn ? "ONLINE" : "OFFLINE";
     if (onPowerChange) onPowerChange(powerOn);
     if (powerOn) { greeted = true; speakSlogan(); }
-    else if ("speechSynthesis" in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+    else { stopSpeak(); }
   });
 
   function resize() {
