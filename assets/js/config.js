@@ -26,6 +26,9 @@ window.AIEYES_CONFIG = {
     website: "www.aieyes.co.kr",
     websiteUrl: "https://www.aieyes.co.kr",
     businessHours: "평일 09:00 - 18:00 (주말·공휴일 휴무)",
+    businessHours_en: "Weekdays 09:00 - 18:00 (Closed weekends & holidays)",
+    address_en: "111-285, 1F, 68 Digital-ro 9-gil, Geumcheon-gu, Seoul, Korea",
+    nameEnFull: "AIEYES Ltd.",
     // 회사 대표 연락처 — 현재는 박재형 사업총괄 휴대폰. 유선 설치 시 아래 번호만 교체하세요.
     landline: "+82 10 5157 5535",
     landlineActive: true, // 휴대폰이라 tel: 링크 활성화

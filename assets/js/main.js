@@ -15,14 +15,16 @@
   var $$ = function (s, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(s)); };
 
   function telHref(phone) { return "tel:" + String(phone || "").replace(/[^\d+]/g, ""); }
+  // 국/영문 선택 헬퍼 (i18n.js 의 window.t 와 동일)
+  function T(ko, en) { return (window.AIEYES_LANG === "en" && en != null) ? en : ko; }
 
   /* ---------------------------------------------------------------
    * 1) Config → DOM 렌더 (연락처/회사정보 동적 출력)
    * ------------------------------------------------------------- */
   function renderConfig() {
-    setText(".js-company-name", C.nameKo);
-    setText(".js-address", C.address);
-    setText(".js-hours", C.businessHours);
+    setText(".js-company-name", T(C.nameKo, C.nameEnFull));
+    setText(".js-address", T(C.address, C.address_en));
+    setText(".js-hours", T(C.businessHours, C.businessHours_en));
 
     $$(".js-email").forEach(function (el) {
       el.textContent = P.email || "";
@@ -73,14 +75,14 @@
           '<a class="contact-channel" href="mailto:' + esc(helpEmail) + '">' +
             '<span class="cc-ico">' + icoMail() + "</span>" +
             "<span>" +
-              '<span class="cc-label">대표 문의메일</span><br>' +
+              '<span class="cc-label">' + esc(T("대표 문의메일", "Inquiry email")) + "</span><br>" +
               '<span class="cc-value">' + esc(helpEmail) + "</span>" +
             "</span>" +
           "</a>";
       }
       // 대표 연락처(현재 박재형 휴대폰) — landlineActive면 클릭 시 전화
       if (C.landline) {
-        var llLabel = C.landlineLabel || "대표 유선번호";
+        var llLabel = T(C.landlineLabel || "대표 유선번호", "Main contact");
         if (C.landlineActive) {
           html +=
             '<a class="contact-channel" href="' + telHref(C.landline) + '">' +
@@ -257,11 +259,10 @@
           "&body=" + encodeURIComponent(body);
         window.location.href = href;
 
-        alert(
-          "메일 작성 창이 열립니다.\n" +
-          "받는사람: " + to + "\n참조: " + cc + "\n\n" +
-          "내용 확인 후 [보내기]를 눌러주세요.\n(추후 MS365 연동 시 자동 발송으로 전환 가능합니다.)"
-        );
+        alert(T(
+          "메일 작성 창이 열립니다.\n받는사람: " + to + "\n참조: " + cc + "\n\n내용 확인 후 [보내기]를 눌러주세요.\n(추후 MS365 연동 시 자동 발송으로 전환 가능합니다.)",
+          "Your email app will open.\nTo: " + to + "\nCc: " + cc + "\n\nPlease review and press [Send].\n(Automatic server-side sending can be added later via MS365.)"
+        ));
         form.reset();
         close();
       });
@@ -365,7 +366,8 @@
       if (label) label.classList.add("hide"); // 한 번 열면 안내 라벨 숨김
       if (open && !greeted) {
         greeted = true;
-        botSay("안녕하세요! 👋 AIEYES AI 상담 봇입니다.\n솔루션·성능·연락처 등 궁금하신 점을 물어보세요.");
+        botSay(T("안녕하세요! 👋 AIEYES AI 상담 봇입니다.\n솔루션·성능·연락처 등 궁금하신 점을 물어보세요.",
+          "Hello! 👋 I'm the AIEYES assistant.\nAsk me about our solutions, performance, or contact details."));
         startParticles();
       }
       if (open) setTimeout(function () { input && input.focus(); }, 200);
@@ -393,23 +395,37 @@
     // 간단 규칙 기반 응답
     function answer(q) {
       var s = q.toLowerCase();
-      if (/sqream|성능|속도|쿼리|dbms/.test(s))
-        return "SQREAM GPU 기반 빅데이터 솔루션은 원본 대비 <b>데이터 90%↑ 압축</b>, <b>쿼리 최대 100x</b>, <b>처리량 20x</b>를 제공합니다. 표준 ANSI SQL을 지원해 도입 부담이 적습니다.";
-      if (/로봇|amr|자동화|휴머노이드|사족/.test(s))
-        return "AMR·사족보행 로봇·휴머노이드를 통합 관제하고, 정밀 비전 AI 검사와 무인 적재·이송 자동화를 제공합니다. 공정 현황을 알려주시면 맞춤 구성을 제안드려요.";
-      if (/플랫폼|ontology|온톨로지|agent|에이전트|ae/.test(s))
-        return "AE 플랫폼은 Data Fabric · AI Ontology · AI Agent를 결합한 기업 맞춤형 지식공유·AX 플랫폼입니다.";
-      if (/정부|과제|컨소시엄|지원|r&d|국책/.test(s))
-        return "중기부·산자부·과기부 국책 과제 기획부터 최적 컨소시엄 구성까지 지원합니다. 관심 분야를 알려주세요.";
-      if (/연락처|전화|이메일|상담|문의|contact/.test(s))
-        return "대표 연락처는 <b>" + esc(P.phone) + "</b> · <b>" + esc(P.email) +
-          "</b> 입니다.<br>바로 <a href='#' class='js-open-contact-inline'>문의하기 폼</a>을 열어드릴까요?";
-      if (/솔루션|서비스|뭐|무엇|소개|어떤/.test(s))
-        return "AIEYES는 ① GPU 빅데이터(SQREAM) ② AI 플랫폼(AE) ③ 로봇 무인 자동화 ④ 정부사업 컨소시엄, 4대 솔루션을 제공합니다. 어떤 영역이 궁금하세요?";
-      if (/안녕|hi|hello|하이/.test(s))
-        return "반갑습니다! 무엇을 도와드릴까요? 솔루션·성능·연락처 중에서 물어보셔도 좋아요.";
-      return "문의 감사합니다. 자세한 상담은 <b>" + esc(P.email) +
-        "</b> 또는 문의하기 폼으로 연결해드릴게요. 담당 아키텍트가 신속히 회신드립니다.";
+      if (/sqream|성능|속도|쿼리|dbms|performance|speed|query/.test(s))
+        return T(
+          "SQREAM GPU 기반 빅데이터 솔루션은 원본 대비 <b>데이터 90%↑ 압축</b>, <b>쿼리 최대 100x</b>, <b>처리량 20x</b>를 제공합니다. 표준 ANSI SQL을 지원해 도입 부담이 적습니다.",
+          "The SQREAM GPU-based big-data solution delivers <b>90%+ data compression</b>, <b>up to 100x query speed</b>, and <b>20x throughput</b>. It supports standard ANSI SQL for easy adoption.");
+      if (/로봇|amr|자동화|휴머노이드|사족|robot|humanoid|automation/.test(s))
+        return T(
+          "AMR·사족보행 로봇·휴머노이드를 통합 관제하고, 정밀 비전 AI 검사와 무인 적재·이송 자동화를 제공합니다. 공정 현황을 알려주시면 맞춤 구성을 제안드려요.",
+          "We integrate control of AMR, quadruped and humanoid robots with precision AI vision inspection and unmanned loading/transport. Tell us about your process for a tailored setup.");
+      if (/플랫폼|ontology|온톨로지|agent|에이전트|\bae\b|platform/.test(s))
+        return T(
+          "AE 플랫폼은 Data Fabric · AI Ontology · AI Agent를 결합한 기업 맞춤형 지식공유·AX 플랫폼입니다.",
+          "The AE Platform is an enterprise knowledge-sharing & AX platform combining Data Fabric, AI Ontology and AI Agents.");
+      if (/정부|과제|컨소시엄|지원|r&d|국책|government|consortium/.test(s))
+        return T(
+          "중기부·산자부·과기부 국책 과제 기획부터 최적 컨소시엄 구성까지 지원합니다. 관심 분야를 알려주세요.",
+          "We support national R&D projects (MSS, MOTIE, MSIT) from planning to building the optimal consortium. Let us know your area of interest.");
+      if (/연락처|전화|이메일|상담|문의|contact|email|phone/.test(s))
+        return T(
+          "대표 연락처는 <b>" + esc(P.phone) + "</b> · <b>" + esc(P.email) + "</b> 입니다.<br>바로 <a href='#' class='js-open-contact-inline'>문의하기 폼</a>을 열어드릴까요?",
+          "Our main contacts are <b>" + esc(P.phone) + "</b> · <b>" + esc(P.email) + "</b>.<br>Shall I open the <a href='#' class='js-open-contact-inline'>contact form</a>?");
+      if (/솔루션|서비스|뭐|무엇|소개|어떤|solution|service|about/.test(s))
+        return T(
+          "AIEYES는 ① GPU 빅데이터(SQREAM) ② AI 플랫폼(AE) ③ 로봇 무인 자동화 ④ 정부사업 컨소시엄, 4대 솔루션을 제공합니다. 어떤 영역이 궁금하세요?",
+          "AIEYES offers four solutions: ① GPU Big Data (SQREAM) ② AI Platform (AE) ③ Unmanned Robotic Automation ④ Government-project Consortium. Which area interests you?");
+      if (/안녕|하이|hi|hello|hey/.test(s))
+        return T(
+          "반갑습니다! 무엇을 도와드릴까요? 솔루션·성능·연락처 중에서 물어보셔도 좋아요.",
+          "Hi there! How can I help? Feel free to ask about solutions, performance, or contact info.");
+      return T(
+        "문의 감사합니다. 자세한 상담은 <b>" + esc(P.email) + "</b> 또는 문의하기 폼으로 연결해드릴게요. 담당 아키텍트가 신속히 회신드립니다.",
+        "Thanks for your message! For details, reach us at <b>" + esc(P.email) + "</b> or via the contact form — our architect will reply promptly.");
     }
 
     function handle(q) {
@@ -484,41 +500,51 @@
     var body = $("#solBody");
     var lastFocused = null;
 
+    // 언어별 필드 선택 (영문이면 key_en 사용)
+    function L(o, k) { return (window.AIEYES_LANG === "en" && o[k + "_en"] != null) ? o[k + "_en"] : o[k]; }
+
     function renderBody(d) {
       var h = "";
-      if (d.desc) h += '<p class="sol-desc">' + esc(d.desc) + "</p>";
+      var desc = L(d, "desc");
+      if (desc) h += '<p class="sol-desc">' + esc(desc) + "</p>";
       if (d.metrics && d.metrics.length) {
         h += '<div class="sol-metrics">';
         d.metrics.forEach(function (m) {
-          h += '<div class="sol-metric"><div class="sm-n">' + esc(m.n) + '</div><div class="sm-l">' + esc(m.l) + "</div></div>";
+          var ml = (window.AIEYES_LANG === "en" && m.l_en != null) ? m.l_en : m.l;
+          h += '<div class="sol-metric"><div class="sm-n">' + esc(m.n) + '</div><div class="sm-l">' + esc(ml) + "</div></div>";
         });
         h += "</div>";
       }
-      if (d.chips && d.chips.length) {
+      var chips = L(d, "chips");
+      if (chips && chips.length) {
         h += '<div class="sol-chips">';
-        d.chips.forEach(function (c) { h += '<span class="sol-chip">' + esc(c) + "</span>"; });
+        chips.forEach(function (c) { h += '<span class="sol-chip">' + esc(c) + "</span>"; });
         h += "</div>";
       }
-      if (d.quote) h += '<div class="sol-quote">“' + esc(d.quote) + "”</div>";
-      if (d.lists && d.lists.length) {
+      var quote = L(d, "quote");
+      if (quote) h += '<div class="sol-quote">“' + esc(quote) + "”</div>";
+      var lists = L(d, "lists");
+      if (lists && lists.length) {
         h += '<div class="sol-lists">';
-        d.lists.forEach(function (l) {
+        lists.forEach(function (l) {
           h += '<div class="sol-list"><h5>' + esc(l.h) + "</h5><ul>";
           (l.items || []).forEach(function (it) { h += "<li>" + esc(it) + "</li>"; });
           h += "</ul></div>";
         });
         h += "</div>";
       }
-      if (d.references) {
-        h += '<div class="sol-refs"><div class="sr-label">REFERENCES</div><div class="sr-body">' + esc(d.references) + "</div></div>";
+      var refs = L(d, "references");
+      if (refs) {
+        h += '<div class="sol-refs"><div class="sr-label">REFERENCES</div><div class="sr-body">' + esc(refs) + "</div></div>";
       }
       if (d.images && d.images.length) {
         h += '<div class="sol-figures">';
         d.images.forEach(function (im) {
-          h += '<figure class="sol-figure' + (im.wide ? "" : " narrow") + '" data-full="' + esc(im.src) + '" data-cap="' + esc(im.cap || "") + '">' +
-               '<span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg> 크게 보기</span>' +
-               '<img src="' + esc(im.src) + '" alt="' + esc(im.cap || "") + '" loading="lazy">' +
-               (im.cap ? "<figcaption>" + esc(im.cap) + "</figcaption>" : "") +
+          var cap = (window.AIEYES_LANG === "en" && im.cap_en != null) ? im.cap_en : (im.cap || "");
+          h += '<figure class="sol-figure' + (im.wide ? "" : " narrow") + '" data-full="' + esc(im.src) + '" data-cap="' + esc(cap) + '">' +
+               '<span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg> ' + esc(T("크게 보기", "Enlarge")) + "</span>" +
+               '<img src="' + esc(im.src) + '" alt="' + esc(cap) + '" loading="lazy">' +
+               (cap ? "<figcaption>" + esc(cap) + "</figcaption>" : "") +
                "</figure>";
         });
         h += "</div>";
@@ -526,12 +552,14 @@
       return h;
     }
 
+    var openKey = null;
     function openSol(key) {
       var d = SOL[key];
       if (!d) return;
+      openKey = key;
       $("#solTag").textContent = d.tag || "";
-      $("#solTitle").textContent = d.title || "";
-      $("#solSubtitle").textContent = d.subtitle || "";
+      $("#solTitle").textContent = L(d, "title") || "";
+      $("#solSubtitle").textContent = L(d, "subtitle") || "";
       body.innerHTML = renderBody(d);
       // 다이어그램 클릭 → 라이트박스 확대
       $$(".sol-figure", body).forEach(function (fig) {
@@ -561,7 +589,7 @@
       card.setAttribute("aria-label", (SOL[key].title || "솔루션") + " 상세 보기");
       var more = document.createElement("div");
       more.className = "card-more";
-      more.innerHTML = '자세히 보기 <span aria-hidden="true">→</span>';
+      more.innerHTML = esc(T("자세히 보기", "View details")) + ' <span aria-hidden="true">→</span>';
       card.appendChild(more);
       card.addEventListener("click", function () { openSol(key); });
       card.addEventListener("keydown", function (e) {
@@ -579,6 +607,25 @@
     // ‘이 솔루션 문의하기’: 상세 모달만 닫고 문의 모달은 기존 핸들러가 오픈
     var scb = $("#solContactBtn");
     if (scb) scb.addEventListener("click", function () { modal.classList.remove("active"); });
+
+    // 언어 전환 시 열려있는 상세 모달 재렌더
+    document.addEventListener("aieyes:langchange", function () {
+      if (openKey && modal.classList.contains("active")) {
+        var d = SOL[openKey];
+        $("#solTitle").textContent = L(d, "title") || "";
+        $("#solSubtitle").textContent = L(d, "subtitle") || "";
+        body.innerHTML = renderBody(d);
+        $$(".sol-figure", body).forEach(function (fig) {
+          fig.addEventListener("click", function () {
+            openLightbox(fig.getAttribute("data-full"), fig.getAttribute("data-cap"));
+          });
+        });
+      }
+      // 카드의 '자세히 보기' 라벨 갱신
+      $$(".card-more").forEach(function (m) {
+        m.innerHTML = esc(T("자세히 보기", "View details")) + ' <span aria-hidden="true">→</span>';
+      });
+    });
   }
 
   /* ---------------------------------------------------------------
@@ -624,6 +671,8 @@
     initMarquee();
     initHeroNet();
     initChatbot();
+    // 언어 전환 시 config 기반 동적 텍스트(푸터·모달 채널·시간) 재렌더
+    document.addEventListener("aieyes:langchange", function () { renderConfig(); });
   }
 
   if (document.readyState === "loading") {

@@ -230,6 +230,23 @@ button { font-family: inherit; cursor: pointer; }
 
 .nav-cta { display: flex; align-items: center; gap: 12px; }
 
+/* 언어 토글 (KO | EN) */
+.lang-toggle {
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  border-radius: var(--r-pill);
+  padding: 7px 13px;
+  min-width: 42px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.lang-toggle:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
 .menu-toggle {
   display: none;
   flex-direction: column;
