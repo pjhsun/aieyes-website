@@ -82,6 +82,28 @@
     }
     return C.voiceSlogan || "에이아이즈는 세상을 다른 눈으로 바라 보고 세상을 바꿉니다.";
   }
+  // 가장 자연스러운(Natural/Neural/Google/Online) 음성을 우선 선택
+  function pickVoice(pref) {
+    var vs = (window.speechSynthesis && window.speechSynthesis.getVoices()) || [];
+    var cand = vs.filter(function (v) { return (v.lang || "").toLowerCase().indexOf(pref) === 0; });
+    if (!cand.length) return null;
+    function score(v) {
+      var n = (v.name || "").toLowerCase(), l = (v.lang || "").toLowerCase(), s = 0;
+      if (/natural|neural/.test(n)) s += 100;       // Edge/Win 뉴럴 음성 (최상)
+      if (/google/.test(n)) s += 80;                // Chrome Google 음성 (자연스러움)
+      if (/online/.test(n)) s += 45;                // Edge 온라인 음성
+      if (/aria|jenny|guy|ava|emma|libby|michelle|sonia/.test(n)) s += 30;
+      if (/samantha|alex|siri|karen|daniel/.test(n)) s += 25; // Apple
+      if (/sunhi|heami|injoon|yuna|nara/.test(n)) s += 25;    // 좋은 한국어
+      if (/david|zira|mark|hazel|george/.test(n)) s -= 25;   // 구형 로봇 음성
+      if (pref === "en" && l === "en-us") s += 12;
+      if (v.localService === false) s += 15;        // 온라인 음성은 대체로 더 자연스러움
+      if (v.default) s += 2;
+      return s;
+    }
+    cand.sort(function (a, b) { return score(b) - score(a); });
+    return cand[0];
+  }
   var greeted = false;
   if ("speechSynthesis" in window) {
     try { window.speechSynthesis.getVoices(); } catch (e) {}
@@ -94,11 +116,9 @@
       var isEn = (window.AIEYES_LANG === "en");
       var u = new SpeechSynthesisUtterance(currentSlogan());
       u.lang = isEn ? "en-US" : "ko-KR";
-      u.rate = isEn ? 1.0 : 0.94; u.pitch = 1.05; u.volume = 1.0;
-      var vs = window.speechSynthesis.getVoices() || [];
-      var pref = isEn ? "en" : "ko";
-      var match = vs.filter(function (v) { return (v.lang || "").toLowerCase().indexOf(pref) === 0; });
-      if (match.length) u.voice = match[0];
+      u.rate = isEn ? 0.98 : 0.94; u.pitch = 1.0; u.volume = 1.0;
+      var voice = pickVoice(isEn ? "en" : "ko");
+      if (voice) { u.voice = voice; u.lang = voice.lang; }
       window.speechSynthesis.speak(u);
     } catch (e) {}
   }
