@@ -73,9 +73,15 @@
   visual.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
   // ---- 음성(TTS): 로봇이 켜지면 슬로건 낭독 ----
-  // 음성 문구는 config.js(company.voiceSlogan)에서 관리 → 발음 조정 용이
-  var SLOGAN = (window.AIEYES_CONFIG && window.AIEYES_CONFIG.company && window.AIEYES_CONFIG.company.voiceSlogan)
-    || "에이아이즈는 세상을 다른 눈으로 바라보고 세상을 바꿉니다.";
+  // 음성 문구는 config.js(company.voiceSlogan / voiceSlogan_en)에서 관리
+  //  현재 언어(window.AIEYES_LANG)에 맞춰 한/영 문장을 선택
+  function currentSlogan() {
+    var C = (window.AIEYES_CONFIG && window.AIEYES_CONFIG.company) || {};
+    if (window.AIEYES_LANG === "en") {
+      return C.voiceSlogan_en || "AIEYES sees the world differently, and changes it.";
+    }
+    return C.voiceSlogan || "에이아이즈는 세상을 다른 눈으로 바라 보고 세상을 바꿉니다.";
+  }
   var greeted = false;
   if ("speechSynthesis" in window) {
     try { window.speechSynthesis.getVoices(); } catch (e) {}
@@ -85,11 +91,14 @@
     if (!("speechSynthesis" in window)) return;
     try {
       window.speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(SLOGAN);
-      u.lang = "ko-KR"; u.rate = 0.94; u.pitch = 1.05; u.volume = 1.0;
+      var isEn = (window.AIEYES_LANG === "en");
+      var u = new SpeechSynthesisUtterance(currentSlogan());
+      u.lang = isEn ? "en-US" : "ko-KR";
+      u.rate = isEn ? 1.0 : 0.94; u.pitch = 1.05; u.volume = 1.0;
       var vs = window.speechSynthesis.getVoices() || [];
-      var ko = vs.filter(function (v) { return /ko/i.test(v.lang || ""); });
-      if (ko.length) u.voice = ko[0];
+      var pref = isEn ? "en" : "ko";
+      var match = vs.filter(function (v) { return (v.lang || "").toLowerCase().indexOf(pref) === 0; });
+      if (match.length) u.voice = match[0];
       window.speechSynthesis.speak(u);
     } catch (e) {}
   }
